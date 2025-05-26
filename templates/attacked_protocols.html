@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Protocol Usage Report</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    .card {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    #protocolTable {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    #protocolTable th, #protocolTable td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+
+    #protocolTable thead th {
+      position: sticky;
+      top: 0;
+      background-color: #f9f9f9;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="main">
+    <header>
+      <h1>Protocol Usage in Network</h1>
+      <a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
+    </header>
+
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+      <a href="{% url 'ip' %}">IPs</a>
+      <a href="{% url 'protocols' %}">Filter Protocols</a>
+      <a href="{% url 'intrusion_results_page' %}">View Packages</a>
+      <a href="{%  url 'training_results' %}">Training Result</a>
+    </div>
+
+    <div class="main-content">
+      <div class="toolbar">
+        <button class="btn" onclick="updateTable()">Update</button>
+
+        <div class="export-wrapper">
+          <div class="export-group">
+            <select id="exportFormat" class="export-select">
+              <option value="csv">CSV</option>
+              <option value="excel">Excel</option>
+            </select>
+            <button class="export-btn" onclick="exportData()">Export</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Protocol Summary</h3>
+        <table id="protocolTable">
+          <thead>
+            <tr>
+              <th>Protocol</th>
+              <th>Source IP</th>
+              <th>Status</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in network_data %}
+              <tr>
+                <td>{{ item.protocol }}</td>
+                <td>{{ item.src }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.timestamp }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function exportData() {
+      const format = document.getElementById('exportFormat').value;
+      const table = document.getElementById('protocolTable');
+      const rows = Array.from(table.querySelectorAll('tr'));
+
+      const csv = rows.map(row =>
+        Array.from(row.querySelectorAll('th, td'))
+          .map(cell => `"${cell.innerText}"`)
+          .join(',')
+      ).join('\n');
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = format === 'excel' ? 'protocols.xlsx' : 'protocols.csv';
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function updateTable() {
+      location.reload();
+    }
+  </script>
+</body>
+</html>

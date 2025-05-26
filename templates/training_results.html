@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Final Training Result</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+
+      
+
+
+
+    .card {
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 24px;
+        max-width: 600px;
+        margin: 20px auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .card-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #2c3e50;
+        text-align: center;
+    }
+
+    .results-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .results-table th,
+    .results-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid #e0e0e0;
+        text-align: left;
+        font-size: 16px;
+    }
+
+    .results-table th {
+        background-color: #f7f7f7;
+        color: #333333;
+        font-weight: 500;
+        width: 35%;
+    }
+
+    .results-table td {
+        color: #444;
+    }
+
+    .results-table tr:last-child td {
+        border-bottom: none;
+    }
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
+      </header>
+
+      <div class="sidebar">
+        <h2>Menu</h2>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{%  url 'ip' %}">IPs</a>
+        <a href="{%  url 'protocols' %}">Filter Protocols</a>
+        <a href="{%  url 'intrusion_results_page' %}">View Packages</a>
+        <a href="{%  url 'training_results' %}">Training Result</a>
+      </div>
+    
+    <div class="main">
+   
+        <h1 style="text-align:center;">Final Training Result</h1>
+        
+        {% if results %}
+        <div class="card">
+            <h2 class="card-title">Training Summary</h2>
+
+            <table class="results-table">
+                <tr><th>Timestamp</th><td>{{ results.timestamp }}</td></tr>
+                <tr><th>Rows</th><td>{{ results.rows }}</td></tr>
+                <tr><th>AUC</th><td>{{ results.auc|default:"N/A" }}</td></tr>
+                <tr><th>F1 Score</th><td>{{ results.f1|default:"N/A" }}</td></tr>
+                <tr><th>Report</th><td>{{ results.report|linebreaksbr|default:"N/A" }}</td></tr>
+            </table>
+        </div>
+
+
+
+
+                <div class="card">
+                    
+                    <h3 style="text-align:center;">Confusion Matrix</h3>
+                    
+                        {% if results.confusion_matrix %}
+                            <img style="display: block; margin: 0 auto;" src="{{ results.confusion_matrix }}" alt="Confusion Matrix" width="600">
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    
+                </div>
+
+                <div class="card">
+                <h3 style="text-align:center;">Training Loss</h3>
+                    
+                        {% if results.training_loss %}
+                            <img style="display: block; margin: 0 auto;" src="{{ results.training_loss }}" alt="Training Loss" width="600">
+                        {% else %}
+                            N/A
+                        {% endif %}
+                </div>
+ 
+                <div class="card">
+                <h3 style="text-align:center;">Error Distribution</h3>
+                    
+                        {% if results.error_distribution %}
+                            <img style="display: block; margin: 0 auto;" src="{{ results.error_distribution }}" alt="Error Distribution" width="600">
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    
+                </div>
+
+                
+            
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+
+
+
+
+
+
+
+
+
+
+        <div class="card">
+            <div class="table-wrapper">
+            <table id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>ct_src_dport_ltm</th>
+                        <th>rate</th>
+                        <th>dwin</th>
+                        <th>dload</th>
+                        <th>swin</th>
+                        <th>ct_dst_sport_ltm</th>
+                        <th>state</th>
+                        <th>ct_state_ttl</th>
+                        <th>sttl</th>
+                        <th>label</th>
+                        <th>reconstruction_error</th>
+                        <th>predicted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in csv_data %}
+                        <tr>
+                            <td>{{ row.ct_src_dport_ltm }}</td>
+                            <td>{{ row.rate }}</td>
+                            <td>{{ row.dwin }}</td>
+                            <td>{{ row.dload }}</td>
+                            <td>{{ row.swin }}</td>
+                            <td>{{ row.ct_dst_sport_ltm }}</td>
+                            <td>{{ row.state }}</td>
+                            <td>{{ row.ct_state_ttl }}</td>
+                            <td>{{ row.sttl }}</td>
+                            <td>{{ row.label }}</td>
+                            <td>{{ row.reconstruction_error }}</td>
+                            <td>{{ row.predicted }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+     </div>
+
+   
+    
+
+</body>
+</html>

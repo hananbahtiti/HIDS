@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Protocol Usage Report</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <div class="main">
+    <header>
+      <h1>Blocked IPs</h1>
+      <a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
+    </header>
+
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+      <a href="{%  url 'ip' %}">IPs</a>
+      <a href="{%  url 'protocols' %}">Filter Protocols</a>
+      <a href="{%  url 'intrusion_results_page' %}">View Packages</a>
+      <a href="{%  url 'training_results' %}">Training Result</a>
+    </div>
+
+
+    <div class="export-wrapper">
+      <div class="export-group">
+        <select id="exportFormat" class="export-select">
+          <option value="csv">CSV</option>
+          <option value="excel">Excel</option>
+        </select>
+        <button class="export-btn" onclick="exportData()">Export</button>
+      </div>
+    </div>
+    
+
+
+    <div class="main-content">
+      <div class="card">
+        <h3>Blocked IPs</h3>
+        <div style="max-height: 400px; overflow-y: auto;">
+          <table  style="border-collapse: collapse; width: 100%;">
+            <thead>
+              <tr style="position: sticky; top: 0; background: rgb(241, 233, 233); z-index: 10;">
+                <th>IP Address</th>
+                <th>Attack Type</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="blockedTableBody">
+              {% if blocked_ips %}
+                {% for ip in blocked_ips %}
+                <tr>
+                  <td>{{ ip.ip_address }}</td>
+                  <td>{{ ip.attack_type }}</td>
+                  <td class="{% if ip.status == 'Blocked' %}status-alert{% else %}status-detected{% endif %}">
+                    {{ ip.status }}
+                  </td>
+                  <td>
+                    {% if ip.status == 'Blocked' %}
+                      <button class="btn-unblock" onclick="handleUnblockIP('{{ ip.ip_address }}')">Unblock</button>
+                    {% else %}
+                      <span style="color: gray;">N/A</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              {% else %}
+                <tr><td colspan="4">No blocked IPs found.</td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="export-wrapper">
+      <div class="export-group">
+        <select id="allExportFormat" class="export-select">
+          <option value="csv">CSV</option>
+          <option value="excel">Excel</option>
+        </select>
+        <button class="export-btn" onclick="exportAllIPs()">Export</button>
+      </div>
+    </div>
+    
+
+
+    <div class="main-content">
+      <div class="card">
+        <h3>All Network IPs</h3>
+        <div style="max-height: 400px; overflow-y: auto;">
+          <table id="allTable" style="border-collapse: collapse; width: 100%;">
+            <thead>
+              <tr style="position: sticky; top: 0; background: rgb(241, 233, 233); z-index: 10;">
+                <th>Block</th>
+                <th>IP Address</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="allTableBody">
+              {% if normal_ips %}
+                {% for ip in normal_ips %}
+                <tr>
+                  <td><button class="btn-block">Block</button></td>
+                  <td>{{ ip }}</td>
+                  <td class="status-active">Normal</td>
+                </tr>
+                {% endfor %}
+              {% else %}
+                <tr><td colspan="3">No normal IPs found.</td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="card">
+        <h3>Manually Block IP</h3>
+        <div class="input-group">
+          <label>IP Address</label>
+          <input type="text" id="ipInput" placeholder="Enter IP Address">
+        </div>
+        <div class="input-group">
+          <label>Attack Type</label>
+          <input type="text" id="attackTypeInput" placeholder="Example: Brute Force">
+        </div>
+        <button class="btn" id="manualBlockBtn" onclick="handleBlockManually()">Block</button>
+      </div>
+    </div>
+
+    <script src="{% static 'js/blocked_ips.js' %}"></script>
+  </div>
+</body>
+</html>

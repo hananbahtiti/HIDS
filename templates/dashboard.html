@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Menu</h2>
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+    <a href="{% url 'ip' %}">IPs</a>
+    <a href="{% url 'protocols' %}">Filter Protocols</a>
+    <a href="{% url 'intrusion_results_page' %}">View Packages</a>
+    <a href="{%  url 'training_results' %}">Training Result</a>
+  </div>
+
+  <div class="main-content">
+    <div class="main">
+      <header>
+        <h1>Welcome Admin, this is the threat summary</h1>
+        <div style="display: flex; gap: 10px;">
+          
+          <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+        </div>
+      </header>
+
+      <!-- Blocked IPs -->
+      <div class="card">
+        <h3>Blocked IPs</h3>
+        <div style="max-height: 400px; overflow-y: auto;">
+          <table style="border-collapse: collapse; width: 100%;">
+            <thead>
+              <tr style="position: sticky; top: 0; background: #f1e9e9; z-index: 10;">
+                <th>IP Address</th>
+                <th>Attack Type</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if blocked_ips %}
+                {% for ip in blocked_ips %}
+                <tr>
+                  <td>{{ ip.ip_address }}</td>
+                  <td>{{ ip.attack_type }}</td>
+                  <td class="status-alert">{{ ip.status }}</td>
+                </tr>
+                {% endfor %}
+              {% else %}
+                <tr><td colspan="3">No blocked IPs found.</td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Protocols -->
+<div class="card" style="margin-top: 20px;">
+  <h3>Recent Protocols</h3>
+  <div style="max-height: 400px; overflow-y: auto;">
+    <table style="border-collapse: collapse; width: 100%;">
+      <thead>
+        <tr style="position: sticky; top: 0; background: #f1e9e9; z-index: 10;">
+          <th>Protocol</th>
+          <th>Source IP</th>
+          <th>Status</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if network_data %}
+          {% for item in network_data %}
+          <tr class="{% if item.status|lower == 'normal' %}row-normal{% else %}row-alert{% endif %}">
+            <td>{{ item.protocol }}</td>
+            <td>{{ item.src }}</td>
+            <td>{{ item.status }}</td>
+            <td>{{ item.timestamp|date:"Y-m-d H:i:s" }}</td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr><td colspan="4">No protocol data found.</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+</html>

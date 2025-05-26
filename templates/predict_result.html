@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Protocol Usage Report</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <div class="main">
+    <header>
+      <!-- SweetAlert2 CSS -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+      <!-- SweetAlert2 JS -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+      <a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
+    </header>
+
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+      <a href="{%  url 'ip' %}">IPs</a>
+      <a href="{%  url 'protocols' %}">Filter Protocols</a>
+      <a href="{%  url 'intrusion_results_page' %}">View Packages</a>
+      <a href="{%  url 'training_results' %}">Training Result</a>
+    </div>
+
+<div class="main-content">
+  <div class="toolbar">
+    <div style="display: flex; gap: 10px;">
+      <button class="btn update-btn" onclick="updateTable()">Update</button>
+      
+      <button class="btn" id="train-btn" type="button">Train</button>
+    </div>
+    
+    
+    
+    <div class="export-wrapper">
+      <div class="export-group">
+        <select id="exportFormat" class="export-select">
+          <option value="csv">CSV</option>
+          <option value="excel">Excel</option>
+        </select>
+        <button  class="export-btn" onclick="exportData()">Export</button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="card">
+    <h2 style="text-align:center;">Intrusion Detection Results</h2>
+  
+    <div class="table-wrapper">
+      <table id="resultsTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Timestamp</th>
+            <th>ct_src_dport_ltm</th>
+            <th>Rate</th>
+            <th>Dwin</th>
+            <th>Dload</th>
+            <th>Swin</th>
+            <th>ct_dst_sport_ltm</th>
+            <th>ct_state_ttl</th>
+            <th>sttl</th>
+            <th>ip src</th>
+            <th>protocol</th>
+            <th>state</th>
+            <th>mse</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if rows %}
+            {% for row in rows %}
+              <tr>
+                <td>{{ row.row_index }}</td>
+                <td>{{ row.timestamp }}</td>
+                <td>{{ row.ct_src_dport_ltm }}</td>
+                <td>{{ row.rate }}</td>
+                <td>{{ row.dwin }}</td>
+                <td>{{ row.dload }}</td>
+                <td>{{ row.swin }}</td>
+                <td>{{ row.ct_dst_sport_ltm }}</td>
+                <td>{{ row.ct_state_ttl }}</td>
+                <td>{{ row.sttl }}</td>
+                <td>{{ row.src }}</td>
+                <td>{{ row.proto }}</td>
+                <td>{{ row.state }}</td>
+                <td>{{ row.mse }}</td>
+                <td>{{ row.result }}</td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr><td colspan="12">No data available</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  
+
+
+  <script src="{% static 'js/result.js' %}">
+    
+
+
+  </script>
+</body>
+</html>
