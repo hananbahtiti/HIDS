@@ -1,0 +1,343 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background-color: #f1f1f1;
+    color: #333333;
+    display: flex;
+    height: 100vh;
+    flex-direction: row;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: #2C3E50;
+    color: #fff;
+    width: 260px;
+    padding: 30px 20px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: all 0.3s ease;
+}
+
+.sidebar h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    align-self: center;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ECF0F1;
+    text-decoration: none;
+    padding: 12px 16px;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.sidebar a:hover {
+    background-color: #34495E;
+    color: #3498DB;
+}
+
+.sidebar a.active {
+    background-color: #1ABC9C;
+    color: #fff;
+}
+
+.sidebar a i {
+    font-size: 18px;
+}
+
+/* Main Content */
+.main {
+    margin-left: 270px;
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 20px;
+}
+
+/* Cards */
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    max-width: 600px;
+    margin: 20px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #2C3E50;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.card ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.card ul li {
+    background: #f1f1f1;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+}
+
+/* Layout Sections */
+.chart, .table, .form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.chart > div, .table > div, .form > div {
+    flex: 1 1 45%;
+    min-width: 300px;
+}
+
+/* Buttons */
+.btn, .btn-block, .btn-unblock {
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn {
+    background-color: #2980B9;
+}
+
+.btn:hover {
+    background-color: #3498DB;
+}
+
+.btn-block {
+    background-color: #0eb855;
+}
+
+.btn-block:hover {
+    background-color: #45a049;
+}
+
+.btn-unblock {
+    background-color: #f44336;
+}
+
+.btn-unblock:hover {
+    background-color: #d32f2f;
+}
+
+.btn-logout {
+    background-color: #3498DB;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn-logout:hover {
+    background-color: #e74c3c;
+}
+
+/* Table Styling */
+table, .results-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #BDC3C7;
+    text-align: center;
+    font-size: 16px;
+}
+
+.results-table th, .results-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+/* Status Labels */
+.status-safe, .status-alert, .status-active, .status-attack, .status-normal, .status-detected {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+}
+
+.status-safe, .status-normal, .status-active {
+    background-color: #2ecc71;
+}
+
+.status-alert, .status-attack {
+    background-color: #e74c3c;
+}
+
+.status-detected {
+    color: #d35400;
+    background: none;
+}
+
+/* Row colors */
+.row-normal {
+    background-color: rgb(6, 167, 6) !important;
+    color: white !important;
+}
+
+.row-alert {
+    background-color: red !important;
+    color: white !important;
+}
+
+/* Filter / Input */
+.filter-select, .filter-buttons, .input-group {
+    margin-top: 20px;
+    width: 100%;
+}
+
+input, select {
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    border: 1px solid #BDC3C7;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #2980B9;
+}
+
+/* Export section */
+.export-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.export-group {
+    display: flex;
+    align-items: center;
+    background-color: #ecf0f1;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.export-select {
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #d6e3f3;
+    color: #2C3E50;
+    border-radius: 8px 0 0 8px;
+    cursor: pointer;
+    outline: none;
+    font-weight: 500;
+}
+
+.export-btn {
+    background-color: #2980B9;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    font-size: 14px;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.export-btn:hover {
+    background-color: #3498DB;
+}
+
+/* Table Wrapper */
+.table-wrapper {
+    max-height: 500px;
+    overflow: auto;
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+#resultsTable {
+    width: 1500px;
+    border-collapse: collapse;
+}
+
+#resultsTable th, #resultsTable td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+    background-color: white;
+    white-space: nowrap;
+}
+
+#resultsTable thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f5f5f5;
+    z-index: 2;
+}
+
+#resultsTable th:first-child, #resultsTable td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: #f5f5f5;
+    z-index: 3;
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+        box-shadow: none;
+    }
+
+    .chart > div, .table > div, .form > div {
+        flex: 1 1 100%;
+    }
+}
